@@ -9,6 +9,7 @@ services:
       - TZ=America/New_York
     volumes:
       - /home/vipul/homeassistant:/config
+      - /run/dbus:/run/dbus:ro
     network_mode: host
     # This will replace the existing homeassistant container
 
