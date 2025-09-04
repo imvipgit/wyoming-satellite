@@ -19,6 +19,7 @@ services:
   satellite:
     image: "wyoming-satellite-with-alsa"
     container_name: "wyoming-satellite-by02"
+    restart: unless-stopped
     ports:
       - "10700:10700"
     devices:
@@ -51,6 +52,7 @@ services:
   openwakeword:
     image: "rhasspy/wyoming-openwakeword"
     container_name: "openwakeword"
+    restart: unless-stopped
     ports:
       - "10400:10400"
     command:
@@ -65,6 +67,7 @@ services:
   whisper:
     image: "rhasspy/wyoming-whisper"
     container_name: "whisper"
+    restart: unless-stopped
     ports:
       - "10300:10300"
     command:
@@ -79,6 +82,7 @@ services:
   piper:
     image: "rhasspy/wyoming-piper"
     container_name: "piper"
+    restart: unless-stopped
     ports:
       - "10200:10200"
     command:
