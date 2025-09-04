@@ -10,7 +10,10 @@ services:
     volumes:
       - /home/vipul/homeassistant:/config
       - /run/dbus:/run/dbus:ro
-    network_mode: host
+    ports:
+      - "8123:8123"
+    networks:
+      - wyoming-network
     # This will replace the existing homeassistant container
 
   satellite:
@@ -35,14 +38,6 @@ services:
       - "tcp://openwakeword:10400"
       - "--wake-word-name"
       - "ok_nabu"
-      - "--mic-auto-gain"
-      - "8"
-      - "--mic-noise-suppression"
-      - "2"
-      - "--mic-volume-multiplier"
-      - "1.2"
-      - "--snd-volume-multiplier"
-      - "1.0"
       - "--awake-wav"
       - "/app/sounds/awake.wav"
       - "--done-wav"
@@ -73,6 +68,8 @@ services:
     ports:
       - "10300:10300"
     command:
+      - "--model"
+      - "base"
       - "--uri"
       - "tcp://0.0.0.0:10300"
       - "--debug"
@@ -87,6 +84,8 @@ services:
     command:
       - "--uri"
       - "tcp://0.0.0.0:10200"
+      - "--voice"
+      - "en_US-lessac-medium"
       - "--debug"
     networks:
       - wyoming-network
