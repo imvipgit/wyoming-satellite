@@ -17,7 +17,7 @@ services:
     # This will replace the existing homeassistant container
 
   satellite:
-    image: "vipulsindha/wyoming-satellite"
+    image: "wyoming-satellite-with-alsa"
     container_name: "wyoming-satellite-by02"
     ports:
       - "10700:10700"
