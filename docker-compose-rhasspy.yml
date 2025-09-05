@@ -1,0 +1,92 @@
+version: "3.8"
+
+services:
+  rhasspy:
+    image: "rhasspy/rhasspy:latest"
+    container_name: "rhasspy"
+    restart: unless-stopped
+    ports:
+      - "12101:12101"
+    volumes:
+      - /home/vipul/rhasspy:/profiles
+      - /dev/snd:/dev/snd
+    devices:
+      - /dev/snd:/dev/snd
+    group_add:
+      - audio
+    environment:
+      - RHASSPY_PROFILES_DIR=/profiles
+      - RHASSPY_PROFILE=english
+    command:
+      - "--profile"
+      - "english"
+      - "--debug"
+      - "--audio-recording"
+      - "--audio-playing"
+      - "--microphone"
+      - "plughw:CARD=Y02,DEV=0"
+      - "--speaker"
+      - "plughw:CARD=Y02,DEV=0"
+      - "--wake-word"
+      - "jarvis"
+      - "--intent-recognition"
+      - "fsticuffs"
+      - "--text-to-speech"
+      - "piper"
+      - "--speech-to-text"
+      - "whisper"
+      - "--home-assistant"
+      - "http://homeassistant:8123"
+      - "--home-assistant-token"
+      - "YOUR_HA_TOKEN_HERE"
+    networks:
+      - rhasspy-network
+
+  homeassistant:
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    container_name: "homeassistant"
+    privileged: true
+    restart: unless-stopped
+    environment:
+      - TZ=America/New_York
+    volumes:
+      - /home/vipul/homeassistant:/config
+      - /run/dbus:/run/dbus:ro
+    ports:
+      - "8123:8123"
+    networks:
+      - rhasspy-network
+
+  whisper:
+    image: "rhasspy/wyoming-whisper:latest"
+    container_name: "whisper"
+    restart: unless-stopped
+    ports:
+      - "10300:10300"
+    command:
+      - "--model"
+      - "base"
+      - "--uri"
+      - "tcp://0.0.0.0:10300"
+      - "--debug"
+    networks:
+      - rhasspy-network
+
+  piper:
+    image: "rhasspy/wyoming-piper:latest"
+    container_name: "piper"
+    restart: unless-stopped
+    ports:
+      - "10200:10200"
+    command:
+      - "--uri"
+      - "tcp://0.0.0.0:10200"
+      - "--voice"
+      - "en_US-lessac-medium"
+      - "--debug"
+    networks:
+      - rhasspy-network
+
+networks:
+  rhasspy-network:
+    driver: bridge
