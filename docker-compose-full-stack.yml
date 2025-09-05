@@ -38,7 +38,7 @@ services:
       - "--wake-uri"
       - "tcp://openwakeword:10400"
       - "--wake-word-name"
-      - "ok_nabu"
+      - "hey_jarvis"
       - "--awake-wav"
       - "/app/sounds/awake.wav"
       - "--done-wav"
@@ -59,7 +59,7 @@ services:
       - "--uri"
       - "tcp://0.0.0.0:10400"
       - "--preload-model"
-      - "ok_nabu"
+      - "hey_jarvis"
       - "--debug"
     networks:
       - wyoming-network
