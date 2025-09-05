@@ -20,25 +20,6 @@ services:
     command:
       - "--profile"
       - "english"
-      - "--debug"
-      - "--audio-recording"
-      - "--audio-playing"
-      - "--microphone"
-      - "plughw:CARD=Y02,DEV=0"
-      - "--speaker"
-      - "plughw:CARD=Y02,DEV=0"
-      - "--wake-word"
-      - "jarvis"
-      - "--intent-recognition"
-      - "fsticuffs"
-      - "--text-to-speech"
-      - "piper"
-      - "--speech-to-text"
-      - "whisper"
-      - "--home-assistant"
-      - "http://homeassistant:8123"
-      - "--home-assistant-token"
-      - "YOUR_HA_TOKEN_HERE"
     networks:
       - rhasspy-network
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Rhasspy Setup Script
+# Simple Rhasspy Setup Script
 # This script helps you transition from Wyoming to Rhasspy
 
 echo "🚀 Setting up Rhasspy Voice Assistant..."
@@ -15,32 +15,19 @@ fi
 
 echo "✅ Running on Pi (hostname: $HOSTNAME)"
 
-echo "📋 Step 1: Get your Home Assistant token"
-echo "1. Open Home Assistant in your browser: http://192.168.68.66:8123"
-echo "2. Go to Profile → Long-lived access tokens"
-echo "3. Create a new token and copy it"
-echo "4. Press Enter when you have the token..."
-read -r
+echo "🛑 Step 1: Stopping current services..."
+docker compose -f docker-compose-rhasspy.yml down
 
-echo "🔑 Please paste your Home Assistant token:"
-read -r HA_TOKEN
-
-# Replace the token in the compose file
-sed -i "s/YOUR_HA_TOKEN_HERE/$HA_TOKEN/g" docker-compose-rhasspy.yml
-
-echo "🛑 Step 2: Stopping current Wyoming services..."
-docker compose -f docker-compose-full-stack.yml down
-
-echo "🗂️ Step 3: Creating Rhasspy profiles directory..."
+echo "🗂️ Step 2: Creating Rhasspy profiles directory..."
 mkdir -p /home/vipul/rhasspy
 
-echo "🐳 Step 4: Starting Rhasspy services..."
+echo "🐳 Step 3: Starting Rhasspy services..."
 docker compose -f docker-compose-rhasspy.yml up -d
 
-echo "⏳ Step 5: Waiting for services to start..."
+echo "⏳ Step 4: Waiting for services to start..."
 sleep 10
 
-echo "🔍 Step 6: Checking service status..."
+echo "🔍 Step 5: Checking service status..."
 docker ps
 
 echo ""
@@ -59,3 +46,10 @@ echo "📚 Next steps:"
 echo "   1. Open Rhasspy web interface to configure intents"
 echo "   2. Test the conversational mode"
 echo "   3. Customize wake word and responses"
+echo ""
+echo "🔧 Configuration:"
+echo "   • Audio Input: plughw:CARD=Y02,DEV=0"
+echo "   • Audio Output: plughw:CARD=Y02,DEV=0"
+echo "   • TTS Service: http://piper:10200"
+echo "   • STT Service: http://whisper:10300"
+echo "   • Home Assistant: http://homeassistant:8123"
